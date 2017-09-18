@@ -11,17 +11,33 @@
  */
 package paystation.domain;
 
+import java.util.*;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 public class PayStationImplTest {
 
     PayStation ps;
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
     @Before
     public void setup() {
         ps = new PayStationImpl();
+    }
+
+    @After
+    public void tearDown() throws Exception {
     }
 
     /**
@@ -138,4 +154,51 @@ public class PayStationImplTest {
         assertEquals("Insert after cancel should work",
                 10, ps.readDisplay());
     }
+    
+
+    /**
+     * Test of empty method, of class PayStationImpl.
+     */
+        /* total should be 70 and 7 */
+    @Test
+    public void coinsReturned() 
+            throws IllegalCoinException {
+        PayStationImpl instance = new PayStationImpl();
+        int expResult = 70;
+        instance.addPayment(5);
+        instance.addPayment(5);
+        instance.addPayment(10);
+        instance.addPayment(10);
+        instance.addPayment(10);
+        instance.addPayment(5);
+        instance.addPayment(25);
+        // TODO review the generated test code and remove the default call to fail.
+        assertEquals("should return all money inserted",
+                70, instance.empty());
+        assertEquals("should be empty now",
+                0, instance.empty());
+    }
+    /**
+     * Test of cancel method, of class PayStationImpl.
+     */
+    @Test
+    public void testCancel() 
+            throws IllegalCoinException {
+        System.out.println("cancel");
+        PayStationImpl instance = new PayStationImpl();
+        instance.addPayment(10);
+        instance.addPayment(10);
+        instance.addPayment(25);
+        Map<Integer, Integer> expResult = new HashMap<Integer,Integer>();
+        expResult.put(5,0);
+        expResult.put(10,2);
+        expResult.put(25,1);
+        assertEquals(expResult, instance.cancel());
+        Map<Integer, Integer> expResult2 = new HashMap<Integer,Integer>();
+        expResult2.put(5,0);
+        expResult2.put(10,0);
+        expResult2.put(25,0);
+        assertEquals(expResult2, instance.cancel());
+    }
+
 }
